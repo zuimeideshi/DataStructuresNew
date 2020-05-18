@@ -10,22 +10,22 @@
 # print(nums)
 
 # 选择排序
-def seletcSort(alist):
+# def seletcSort(alist):
 
-    for fillslot in range(len(nums)-1,0,-1):
+#     for fillslot in range(len(nums)-1,0,-1):
 
-        positionMax=0
-        for location in range(1,fillslot+1):
-            if nums[location]>nums[positionMax]:
-                positionMax=location
-        temp = nums[fillslot]
+#         positionMax=0
+#         for location in range(1,fillslot+1):
+#             if nums[location]>nums[positionMax]:
+#                 positionMax=location
+#         temp = nums[fillslot]
 
-        nums[fillslot] = nums[positionMax]
-        nums[positionMax] = temp
+#         nums[fillslot] = nums[positionMax]
+#         nums[positionMax] = temp
 
-nums = [5,2,3,1,0]
-seletcSort(nums)
-print(nums)
+# nums = [5,2,3,1,0]
+# seletcSort(nums)
+# print(nums)
 
 
 # bubbleSort(nums)
@@ -102,21 +102,21 @@ print(alist)
         第7次遍历   [20,17,26,31,44,54,55,77,93]   26
         第8次遍历   [17,20,26,31,44,54,55,77,93]   20
 '''
-def seletcSort(alist):
-    for fillslot in range(len(alist)-1,0,-1):
-        for location in range(1,fillslot+1):
-            positionMax = 0
-            if alist[location] > alist[positionMax]:
-                positionMax = location
+# def seletcSort(alist):
+#     for fillslot in range(len(alist)-1,0,-1):
+#         for location in range(1,fillslot+1):
+#             positionMax = 0
+#             if alist[location] > alist[positionMax]:
+#                 positionMax = location
 
-        temp = alist[fillslot]
-        alist[fillslot] = alist[positionMax]
-        alist[positionMax] = temp
+#         temp = alist[fillslot]
+#         alist[fillslot] = alist[positionMax]
+#         alist[positionMax] = temp
         
 
-alist = [26,54,93,17,77,31,44,55,20]
-seletcSort(alist)
-print(alist)
+# alist = [26,54,93,17,77,31,44,55,20]
+# seletcSort(alist)
+# print(alist)
 
 
 '''
@@ -228,36 +228,102 @@ def shellSort(alist):
 '''
 
 
+
+# def mergeSort(alist):
+#     if len(alist)>1:
+
+#         mid = len(alist)//2
+
+#         lefthalf = alist[:mid]
+#         righthalf = alist[mid:]
+
+#         mergeSort(lefthalf)
+#         mergeSort(righthalf)
+#         i = 0 
+#         j = 0
+#         k = 0
+#         while i < len(lefthalf) and j len(righthalf):
+
+#             if lefthalf[i] > righthalf[j]:
+
+#                 alist[k] = lefthalf[i]
+
+#                 i = i+1
+#             else:
+#                 alist[k] = righthalf[j]
+#                 j+1
+#             k=k+1
+
+
+# alist=[54,26,93,17,77,31,44,55,20]
+# mergeSort(alist)
+# print(alist)
+
+
 '''
-六快速排序
+    六、快速排序
+        选择一个值作为枢纽值，一般就是列表第一项，枢纽值作为帮助拆分的标准，
+        alist = [54,26,93,17,77,31,44,55,20]
+                [17,20,26,31,44,54,55,77,93]
+        54最终在原列表中31的位置上，这个位置叫做：拆分点
+        54     左标记 [26,93,17,77,31,44,55,20] 右标记  
+        首先增加左标记，知道找到一个大于枢纽值得值，停止，然后递减右标记，知道找到一个小于枢纽值的值，停止。
+        交换这两项
+        增加左标记
+        26 < 54
+        93 > 54  stop
+        递减右标记
+        20 < 54  stop
+        交换
+        第一次的结果  [54,26,20,17,77,31,44,55,93]
+        第二次的结果  [54,26,20,17,44,31,77,55,93]
+        第三次的结果  [31,26,20,17,44,54,77,55,93]
+        根据拆分点，拆左右两个列表
+        [31,26,20,17,44]   [77,55,93]
+        重复以上过程
+        [17,26,20,31,44]   [55,77,93]
+        [17,26,20]
+        [26,20]
+        [20,26]
 '''
+def quickSort(alist):
+    quickSortHelper(alist,0,len(alist)-1)
 
-def mergeSort(alist):
-    if len(alist)>1:
+def quickSortHelper(alist,first,last):
+    if first < last:
+        splitpoint = partition(alist,first,last)
+        quickSortHelper(alist,first,splitpoint-1)
+        quickSortHelper(alist,splitpoint+1,last)
 
-        mid = len(alist)//2
+def partition(alist,first,last):
+    pivotvalue = alist[first]
 
-        lefthalf = alist[:mid]
-        righthalf = alist[mid:]
+    leftmark  = first + 1
+    rightmark = last
 
-        mergeSort(lefthalf)
-        mergeSort(righthalf)
-        i = 0 
-        j = 0
-        k = 0
-        while i < len(lefthalf) and j len(righthalf):
+    done = False
+    while not done:
+        while leftmark <= rightmark and alist[leftmark] <= pivotvalue:
+            leftmark = leftmark + 1
 
-            if lefthalf[i] > righthalf[j]:
+        while alist[rightmark] >= pivotvalue and rightmark >= leftmark:
+            rightmark = rightmark - 1
+        
+        if rightmark < leftmark:
+            done = True
+        else:
+            temp = alist[leftmark]
+            alist[leftmark] = alist[rightmark]
+            alist[rightmark] = temp
+    # 找到正确的位置,与枢纽值做交换
+    temp = alist[first]
+    alist[first] = alist[rightmark]
+    alist[rightmark] = temp
 
-                alist[k] = lefthalf[i]
-
-                i = i+1
-            else:
-                alist[k] = righthalf[j]
-                j+1
-            k=k+1
+    return rightmark
+        
 
 
-alist=[54,26,93,17,77,31,44,55,20]
-mergeSort(alist)
+alist = [100,54,26,93,17,77,31,44,55,20]
+quickSort(alist)
 print(alist)
