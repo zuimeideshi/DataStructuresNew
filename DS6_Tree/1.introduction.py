@@ -125,5 +125,22 @@ parseTree.postorder()
 
 
 # 定义一个函数，使用以上的构建函数，计算出完全表达式( ( 7 + 3 ) * ( 5 - 2 ) )的结果
+
+import operator
+
 def evaluate(parseTree):
-    pass
+    opers = {
+        '+':operator.add,
+        '-':operator.sub,
+        '*':operator.mul,
+        '/':operator.truediv
+    }
+    leftChild = parseTree.getLeftChild()
+    rightChild = parseTree.getRightChild()
+    if leftChild and rightChild:
+        result = opers[parseTree.getRootVal()](evaluate(leftChild),evaluate(rightChild))
+        return result
+    else:
+        return parseTree.getRootVal()
+
+print(evaluate(parseTree))
